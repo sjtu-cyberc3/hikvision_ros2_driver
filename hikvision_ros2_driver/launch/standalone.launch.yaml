@@ -1,0 +1,11 @@
+launch:
+  - arg:
+      name: camera_name
+  
+  - node:
+      pkg: hikvision_ros2_driver
+      exec: hikvision_ros2_driver_node
+      namespace: /driver/hikvision/$(var camera_name)
+      param:
+        - name: camera_name
+          value: $(var camera_name)

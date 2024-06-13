@@ -1,0 +1,19 @@
+launch:
+  - arg:
+      name: camera_name
+  - arg:
+      name: container_name
+
+  - load_composable_node:
+      target: $(var container_name)
+      composable_node:
+        - pkg: hikvision_ros2_driver
+          plugin: hikvision_ros2_driver::HikvisionDriver
+          name: hikvision_ros2_driver_node
+          namespace: /driver/hikvision/$(var camera_name)
+          param:
+            - name: camera_name
+              value: $(var camera_name)
+          extra_arg:
+            - name: use_intra_process_comms
+              value: 'true'
