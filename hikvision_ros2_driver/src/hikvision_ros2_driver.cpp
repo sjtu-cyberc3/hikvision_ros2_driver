@@ -72,6 +72,7 @@ void HikvisionDriver::Impl::image_callback_ex(unsigned char *pData, MV_FRAME_OUT
         RCLCPP_ERROR_ONCE(node->get_logger(), "unsupport pixel format: %d", (int)pFrameInfo->enPixelType);
         return;
     }
+    p_img_msg->data.resize(p_img_msg->height * p_img_msg->step);
     std::copy_n(pData, pFrameInfo->nFrameLen, p_img_msg->data.begin());
     node->pImpl->img_pub.publish(std::move(p_img_msg));
 
