@@ -73,7 +73,11 @@ void HikvisionDriver::Impl::image_callback_ex(unsigned char *pData, MV_FRAME_OUT
         return;
     }
     p_img_msg->data.resize(p_img_msg->height * p_img_msg->step);
-    std::copy_n(pData, pFrameInfo->nFrameLen, p_img_msg->data.begin());
+    if (pFrameInfo->nFrameLen < p_img_msg->data.size()) {
+        RCLCPP_ERROR(node->get_logger(), "nFrameLen < data.size(), len=%d", pFrameInfo->nFrameLen);
+        return;
+    }
+    std::copy_n(pData, p_img_msg->data.size(), p_img_msg->data.data());
     node->pImpl->img_pub.publish(std::move(p_img_msg));
 
     auto p_info_msg = std::make_unique<hikvision_interface::msg::HikImageInfo>();
